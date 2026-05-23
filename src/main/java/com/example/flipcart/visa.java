@@ -9,6 +9,6 @@ public class visa
     @GetMapping("/visa")
     public String getData()
     {
-        return "your order has been shipped successfully";
+        return "your order has been  shipped and delivery successfully check";
     }
 }
