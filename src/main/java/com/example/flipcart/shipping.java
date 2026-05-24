@@ -14,14 +14,18 @@ public class shipping {
     public String trackOrder() {
         return "Your order is in transit and will be delivered soon";
     }
-
-    @GetMapping("/status")
+ @GetMapping("/status")
     public String orderStatus() {
         return "Your order status is: Delivered";
     }
-
     @GetMapping("/sale")
     public String saleService() {
         return "Big Sale! Get up to 50% discount on your order";
     }
+    @GetMapping("/changes")
+    public String updateChanges() {
+        return "Your shipping details have been updated successfully";
 }
+}
+
+
