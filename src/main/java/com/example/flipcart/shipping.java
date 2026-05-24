@@ -19,4 +19,9 @@ public class shipping {
     public String orderStatus() {
         return "Your order status is: Delivered";
     }
+
+    @GetMapping("/sale")
+    public String saleService() {
+        return "Big Sale! Get up to 50% discount on your order";
+    }
 }
