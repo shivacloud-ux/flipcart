@@ -14,7 +14,7 @@ stages {
 
     stage('Code Compilation') {
         steps {
-            echo 'Starting Code Compilation...'
+            echo 'Starting Code Compilation running'
             sh 'mvn clean compile'
             echo 'Code Compilation Completed Successfully!'
         }
