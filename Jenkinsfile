@@ -1,3 +1,4 @@
+```groovy
 pipeline {
 
     agent any
@@ -11,6 +12,7 @@ pipeline {
     }
 
     stages {
+
         stage('Code Compilation') {
             steps {
                 echo 'Starting Code Compilation...'
@@ -18,6 +20,7 @@ pipeline {
                 echo 'Code Compilation Completed Successfully!'
             }
         }
+
         stage('Code QA Execution') {
             steps {
                 echo 'Running JUnit Test Cases...'
@@ -25,6 +28,7 @@ pipeline {
                 echo 'JUnit Test Cases Completed Successfully!'
             }
         }
+
         stage('Code Package') {
             steps {
                 echo 'Creating WAR Artifact...'
@@ -32,3 +36,7 @@ pipeline {
                 echo 'WAR Artifact Created Successfully!'
             }
         }
+
+    }
+}
+
