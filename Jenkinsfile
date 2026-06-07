@@ -1,10 +1,7 @@
-```groovy
 pipeline {
-
-    agent any
-
-    options {
-        buildDiscarder(logRotator(numToKeepStr: '5', artifactNumToKeepStr: '5'))
+   agent any
+ options {
+        buildDiscarder(logRotator(numToKeepStr: '6', artifactNumToKeepStr: '6'))
     }
 
     tools {
