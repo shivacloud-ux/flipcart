@@ -1,7 +1,7 @@
 pipeline {
    agent any
  options {
-        buildDiscarder(logRotator(numToKeepStr: '6', artifactNumToKeepStr: '6'))
+        buildDiscarder(logRotator(numToKeepStr: '5', artifactNumToKeepStr: '5'))
     }
 
     tools {
