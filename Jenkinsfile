@@ -1,5 +1,7 @@
 pipeline {
-    agent any
+    agent {
+        label 'jslave-teamA'
+    }
 
     parameters {
         string(name: 'maven_version', defaultValue: '3.8.9', description: 'Pass the version of Maven')
