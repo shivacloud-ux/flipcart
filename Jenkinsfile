@@ -1,21 +1,35 @@
 pipeline {
-    agent {
-        label 'jslave-teamA'
+
+    agent any
+
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '3', artifactNumToKeepStr: '3'))
     }
 
-    parameters {
-        string(name: 'maven_version', defaultValue: '3.8.9', description: 'Pass the a version of Maven')
-        string(name: 'terraform_version', defaultValue: '1.6.5', description: 'Pass the version of Terraform')
+    tools {
+        maven 'mvn_3.9.16'
     }
 
     stages {
-        stage('Download Maven') {
+        stage('Code Compilation') {
             steps {
-                sh """
-                    cd /var/lib/jenkins/
-                    wget https://archive.apache.org/dist/maven/maven-3/${maven_version}/binaries/apache-maven-${maven_version}-bin.tar.gz
-                    tar -xvzf apache-maven-${maven_version}-bin.tar.gz
-                """
+                echo 'Starting Code Compilation...'
+                sh 'mvn clean compile'
+                echo 'Code Compilation Completed Successfully!'
+            }
+        }
+        stage('Code QA Execution') {
+            steps {
+                echo 'Running JUnit Test Cases...'
+                sh 'mvn clean test'
+                echo 'JUnit Test Cases Completed Successfully!'
+            }
+        }
+        stage('Code Package') {
+            steps {
+                echo 'Creating WAR Artifact...'
+                sh 'mvn clean package'
+                echo 'WAR Artifact Created Successfully!'
             }
         }
 }
