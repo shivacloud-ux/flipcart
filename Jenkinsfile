@@ -4,7 +4,7 @@ pipeline {
     }
 
     parameters {
-        string(name: 'maven_version', defaultValue: '3.8.9', description: 'Pass the version of Maven')
+        string(name: 'maven_version', defaultValue: '3.8.9', description: 'Pass the a version of Maven')
         string(name: 'terraform_version', defaultValue: '1.6.5', description: 'Pass the version of Terraform')
     }
 
