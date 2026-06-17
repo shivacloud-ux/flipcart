@@ -88,20 +88,7 @@ pipeline {
             }
         }
 
-        stage('Push Docker Image to Docker Hub') {
-            steps {
-                script {
-                    withCredentials([string(credentialsId: 'dockerhubCred', variable: 'dockerhubCred')]) {
 
-                        sh 'docker login docker.io -u shivacloud168 -p ${dockerhubCred}'
-
-                        echo 'Pushing Docker Image to Docker Hub...'
-
-                        sh 'docker push shivacloud168/bookmyplan:latest'
-
-                        echo 'Docker Image Pushed to Docker Hub Successfully!'
-                    }
-                }
             }
         }
 
