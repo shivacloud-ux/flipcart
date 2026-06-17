@@ -1,9 +1,10 @@
+
 pipeline {
 
     agent any
 
     options {
-        buildDiscarder(logRotator(numToKeepStr: '5', artifactNumToKeepStr: '5'))
+        buildDiscarder(logRotator(numToKeepStr: '3', artifactNumToKeepStr: '3'))
     }
 
     tools {
@@ -11,6 +12,7 @@ pipeline {
     }
 
     stages {
+
         stage('Code Compilation') {
             steps {
                 echo 'Starting Code Compilation...'
@@ -18,6 +20,7 @@ pipeline {
                 echo 'Code Compilation Completed Successfully!'
             }
         }
+
         stage('Code QA Execution') {
             steps {
                 echo 'Running JUnit Test Cases...'
@@ -25,12 +28,83 @@ pipeline {
                 echo 'JUnit Test Cases Completed Successfully!'
             }
         }
+
         stage('Code Package') {
             steps {
                 echo 'Creating WAR Artifact...'
-                sh 'mvn clean package'
-                echo 'WAR Artifact Created for  Successfully!'
+                sh '''
+                    mvn clean package
+                    cp target/*.jar target/bookmyplan-1.1.${BUILD_NUMBER}.jar
+                '''
+                echo 'WAR Artifact Created Successfully!'
             }
         }
+
+        stage('Build & Tag Docker Image') {
+            steps {
+                echo 'Building Docker Image and Tagging...'
+                sh 'docker build -t shivacloud168/bookmyplan:latest -t bookmyplan:latest .'
+                echo 'Docker Image Build Completed!'
+            }
+        }
+
+        stage('Push Docker Image to Amazon ECR') {
+            steps {
+                script {
+                    withDockerRegistry(
+                        credentialsId: 'ecr:us-east-1:ecr-credentials',
+                        url: 'https://802854082547.dkr.ecr.us-east-1.amazonaws.com'
+                    ) {
+
+                        echo 'Tagging and Pushing Docker Image to Amazon ECR...'
+
+                        sh '''
+                            docker images
+
+                            docker tag bookmyplan:latest 802854082547.dkr.ecr.us-east-1.amazonaws.com/bookmyplan:latest
+
+                            docker push 802854082547.dkr.ecr.us-east-1.amazonaws.com/bookmyplan:latest
+                        '''
+
+                        echo 'Docker Image Pushed to Amazon ECR Successfully!'
+                    }
+                }
+            }
+        }
+
+        stage('Clean Up Local Docker Images') {
+            steps {
+                echo 'Cleaning Up Local Docker Images...'
+
+                sh '''
+                    docker rmi shivacloud168/bookmyplan:latest || true
+                    docker rmi bookmyplan:latest || true
+                    docker rmi 802854082547.dkr.ecr.us-east-1.amazonaws.com/bookmyplan:latest || true
+
+                    docker image prune -f
+                '''
+
+                echo 'Local Docker Images Cleaned Up Successfully!'
+            }
+        }
+
+        stage('Push Docker Image to Docker Hub') {
+            steps {
+                script {
+                    withCredentials([string(credentialsId: 'dockerhubCred', variable: 'dockerhubCred')]) {
+
+                        sh 'docker login docker.io -u shivacloud168 -p ${dockerhubCred}'
+
+                        echo 'Pushing Docker Image to Docker Hub...'
+
+                        sh 'docker push shivacloud168/bookmyplan:latest'
+
+                        echo 'Docker Image Pushed to Docker Hub Successfully!'
+                    }
+                }
+            }
+        }
+
+    }
 }
-}
+
