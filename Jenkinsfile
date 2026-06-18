@@ -42,7 +42,7 @@ pipeline {
 
         stage('Build & Tag Docker Image') {
             steps {
-                echo 'Building Docker Image and Tagging...'
+                echo 'Building Docker Image and Tagging'
                 sh 'docker build -t shivacloud168/bookmyplan:latest -t bookmyplan:latest .'
                 echo 'Docker Image Build Completed!'
             }
