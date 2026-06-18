@@ -1,4 +1,3 @@
-
 pipeline {
 
     agent any
@@ -60,9 +59,7 @@ pipeline {
 
                         sh '''
                             docker images
-
                             docker tag bookmyplan:latest 802854082547.dkr.ecr.us-east-1.amazonaws.com/bookmyplan:latest
-
                             docker push 802854082547.dkr.ecr.us-east-1.amazonaws.com/bookmyplan:latest
                         '''
 
@@ -84,14 +81,9 @@ pipeline {
                     docker image prune -f
                 '''
 
-                echo 'Local Docker Images Cleaned Up Successfully!'
-            }
-        }
-
-
+                echo 'Local Docker Images Cleaned  Successfully!'
             }
         }
 
     }
 }
-
