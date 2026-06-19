@@ -81,7 +81,7 @@ pipeline {
                     docker image prune -f
                 '''
 
-                echo 'Local Docker Images Cleaned  Successfully!'
+                echo 'Local Docker Images Cleaned for  Successfully!'
             }
         }
 
