@@ -46,7 +46,17 @@ pipeline {
                 echo 'Docker Image Build Completed!'
             }
         }
-
+       stage('Push Docker Image to Docker Hub') {
+       steps {
+        script {
+            withCredentials([string(credentialsId: 'dockerhubCred', variable: 'dockerhubCred')]) {
+                sh 'docker login docker.io -u shivacloud168 -p ${dockerhubCred}'
+                sh 'docker push shivacloud168/bookmyplan:latest'
+                echo 'Docker Image Pushed to Docker Hub Successfully!'
+            }
+        }
+    }
+}
         stage('Push Docker Image to Amazon ECR') {
             steps {
                 script {
