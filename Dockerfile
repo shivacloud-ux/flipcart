@@ -11,7 +11,7 @@ RUN rm -rf /usr/local/tomcat/webapps/ROOT
 RUN useradd -m bookmyplan
 
 # Copy the application JAR
-COPY ./target/bookmyplan*.jar /usr/local/tomcat/webapps/
+COPY target/*.war /usr/local/tomcat/webapps/ROOT.war
 
 # Expose Tomcat port
 EXPOSE 8080
